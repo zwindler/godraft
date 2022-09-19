@@ -28,7 +28,7 @@
             </table>
             
             <h4>Sum of the colored mana from your cards</h4>
-            <table>
+            <table style="width:100%">
                 <tr>
                     <td>☀️</td>
                     <td>💧</td>
@@ -37,11 +37,11 @@
                     <td>🌳</td>
                 </tr>
                 <tr>
-                    <td><input type="number" name="white" value="{{.White}}"/></td>
-                    <td><input type="number" name="blue" value="{{.Blue}}"/></td>
-                    <td><input type="number" name="black" value="{{.Black}}"/></td>
-                    <td><input type="number" name="red" value="{{.Red}}"/></td>
-                    <td><input type="number" name="green" value="{{.Green}}"/></td>      
+                    <td><h4><input type="number" name="white" value="{{.White}}"/></h4></td>
+                    <td><h4><input type="number" name="blue" value="{{.Blue}}"/></h4></td>
+                    <td><h4><input type="number" name="black" value="{{.Black}}"/></h4></td>
+                    <td><h4><input type="number" name="red" value="{{.Red}}"/></h4></td>
+                    <td><h4><input type="number" name="green" value="{{.Green}}"/></h4></td>      
                 </tr>
             </table>
             <input type="submit" value="Compute!" style="font-size: 1.5rem"/>
@@ -50,20 +50,20 @@
         {{ if or (.AWhite) (.ABlue) (.ABlack) (.ARed) (.AGreen) }}
         <h2>A: You should put these lands in your deck</h2>
 
-        <table>
+        <table style="width:100%">
             <tr>
-                <td>☀️</td>
+                <td><h2>☀️</h2></td>
                 <td>💧</td>
                 <td>💀</td>
                 <td>🔥</td>
                 <td>🌳</td>
             </tr>
             <tr>
-                <td>{{.AWhite}}</td>
-                <td>{{.ABlue}}</td>
-                <td>{{.ABlack}}</td>
-                <td>{{.ARed}}</td>
-                <td>{{.AGreen}}</td>      
+                <td><h4>{{.AWhite}}</h4></td>
+                <td><h4>{{.ABlue}}</h4></td>
+                <td><h4>{{.ABlack}}</h4></td>
+                <td><h4>{{.ARed}}</h4></td>
+                <td><h4>{{.AGreen}}</h4></td>      
             </tr>
         </table>
         {{ end }}
