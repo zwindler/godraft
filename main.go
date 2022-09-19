@@ -15,6 +15,7 @@ func init() {
 
 func main() {
 	services.Version = Version
+	log.Printf("godraft version v%s", services.Version)
 	services.DefaultTemplateStruct.SetDefaults()
 	services.Register()
 	server.Start()
