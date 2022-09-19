@@ -23,11 +23,6 @@ var (
 		Black:  0,
 		Red:    0,
 		Green:  0,
-		AWhite: 0.0,
-		ABlue:  0.0,
-		ABlack: 0.0,
-		ARed:   0.0,
-		AGreen: 0.0,
 	}
 	MinCards = 40
 	MaxCards = 60
@@ -105,13 +100,15 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	sumColored := templateStruct.White + templateStruct.Blue + templateStruct.Black + templateStruct.Red + templateStruct.Green
-	var ratio float64 = float64(sumColored) / float64(templateStruct.NLands)
+	if sumColored != 0 {
+		var ratio float64 = float64(sumColored) / float64(templateStruct.NLands)
 
-	templateStruct.AWhite = math.Round(float64(templateStruct.White)/ratio*10) / 10
-	templateStruct.ABlue = math.Round(float64(templateStruct.Blue)/ratio*10) / 10
-	templateStruct.ABlack = math.Round(float64(templateStruct.Black)/ratio*10) / 10
-	templateStruct.ARed = math.Round(float64(templateStruct.Red)/ratio*10) / 10
-	templateStruct.AGreen = math.Round(float64(templateStruct.Green)/ratio*10) / 10
+		templateStruct.AWhite = math.Round(float64(templateStruct.White)/ratio*10) / 10
+		templateStruct.ABlue = math.Round(float64(templateStruct.Blue)/ratio*10) / 10
+		templateStruct.ABlack = math.Round(float64(templateStruct.Black)/ratio*10) / 10
+		templateStruct.ARed = math.Round(float64(templateStruct.Red)/ratio*10) / 10
+		templateStruct.AGreen = math.Round(float64(templateStruct.Green)/ratio*10) / 10
+	}
 
 	t, err := template.ParseFiles("templates/index.html")
 	if err != nil {

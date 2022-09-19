@@ -8,11 +8,7 @@
     <body>
         <h1>godraft</h1>
     
-        <p>godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
-
-        <p>godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
-    
-        <h2>How much lands must I put in my deck?</h2>
+        <h2>Q: How much lands of each type should I put in my deck?</h2>
         <form method="POST" action="compute">
             <table style="width:100%">
                 <tr>
@@ -51,7 +47,8 @@
             <input type="submit" value="Compute!" style="font-size: 1.5rem"/>
         </form>
 
-        <h2>You should put these lands in your deck</h2>
+        {{ if or (.AWhite) (.ABlue) (.ABlack) (.ARed) (.AGreen) }}
+        <h2>A: You should put these lands in your deck</h2>
 
         <table>
             <tr>
@@ -69,6 +66,7 @@
                 <td>{{.AGreen}}</td>      
             </tr>
         </table>
+        {{ end }}
 
         <h2>Help / getting started</h2>
         <ol style="margin-top: 0px;">
@@ -79,10 +77,16 @@
                 </ul>
             <li>For each color, sum the colored mana on your cards' costs
                 <ul>
-                    <li>For example, a 3️⃣☀️☀️ count as 2 white mana, a 3️⃣☀️ as one</li>
+                    <li>For example, a 3️⃣☀️☀️ count as 2 white mana, a 3️⃣☀️ count as one</li>
                 </ul>
             <li>Enter all those values in the boxes and click "Compute!"</li>
         </ol>
+
+        <h2>About</h2>
+
+        <p>godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
+
+        <p>godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
 
     </body>
 </html>
