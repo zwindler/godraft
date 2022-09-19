@@ -16,7 +16,7 @@ var (
 	ErrInvalidNCards      = errors.New("invalid NCards value")
 	ErrInvalidNLands      = errors.New("invalid NLands value")
 	DefaultTemplateStruct = TemplateStruct{}
-	Version string
+	Version               string
 )
 
 type TemplateStruct struct {

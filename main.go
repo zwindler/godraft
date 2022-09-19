@@ -6,13 +6,15 @@ import (
 	"github.com/zwindler/godraft/services"
 )
 
+var Version string
+
 func init() {
 	// Logrus config
 	log.SetFormatter(&log.JSONFormatter{})
 }
 
 func main() {
-	services.Version = "1.0.0"
+	services.Version = Version
 	services.DefaultTemplateStruct.SetDefaults()
 	services.Register()
 	server.Start()

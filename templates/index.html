@@ -6,7 +6,7 @@
         <title>godraft</title>
     </head>
     <body>
-        <h1>godraft 🎴 {{ if .Version }}{{ .Version }}{{ end }}</h1>
+        <h1>godraft 🎴 {{ if .Version }}(v{{ .Version }}){{ end }}</h1>
     
         <h2 style="margin-top: 0px;">Q: How much lands of each type should I put in my deck?</h2>
         <form method="POST" action="compute">
