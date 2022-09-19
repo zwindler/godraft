@@ -6,28 +6,31 @@
         <title>godraft</title>
     </head>
     <body>
-        <h2>godraft</h2>
+        <h1>godraft</h1>
     
-        <p>godraft is a simple webapp to help players during Magic the Gathering(tm) drafts.</p>
-    
-        <h4>Getting started</h4>
-        <ol style="margin-top: 0px;">
-            <li>Count the number of non-land cards you have</li>
-            <li>Decide how much lands you want to add in the deck (for a 40 cards deck, Wizard advise you to put 17 lands and 23 non-lands)</li>
-            <li>For each color, sum the colored mana on your cards' costs (a 3☀️☀️ count as 2 white mana)</li>
-            <li>Enter all those values in the following page and click "Compute!"</li>
-        </ol>
+        <p>godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
 
-        <h3>How much lands of each type must I put in my deck?</h3>
+        <p>godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
+    
+        <h2>How much lands must I put in my deck?</h2>
         <form method="POST" action="compute">
-            <h4>Number of cards in the deck</h4>
-            <div>
-                <input type="range" name="ncards" value="{{.NCards}}" min="40" max="60" step="1" oninput="this.nextElementSibling.value = this.value" style="width:50%; margin-bottom:0; line-height:0"><output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NCards}}</output>
-            </div>
-            <h4>Number of lands you plan to put in the deck</h4>
-            <div>
-                <input type="range" name="nlands" value="{{.NLands}}" min="10" max="25" step="1" oninput="this.nextElementSibling.value = this.value" style="width:50%; margin-bottom:0; line-height:0"><output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NLands}}</output>
-            </div>
+            <table style="width:100%">
+                <tr>
+                    <td style="width:61%">
+                        <h4>Number of cards in the deck</h4>
+                        <div>
+                            <input type="range" name="ncards" value="{{.NCards}}" min="40" max="60" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0"><output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NCards}}</output>
+                        </div>
+                    </td>
+                    <td style="width:39%">
+                        <h4>Number of lands</h4>
+                        <div>
+                            <input type="range" name="nlands" value="{{.NLands}}" min="13" max="25" step="1" oninput="this.nextElementSibling.value = this.value" style="width:80%; margin-bottom:0; line-height:0"><output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NLands}}</output>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            
             <h4>Sum of the colored mana from your cards</h4>
             <table>
                 <tr>
@@ -35,7 +38,7 @@
                     <td>💧</td>
                     <td>💀</td>
                     <td>🔥</td>
-                    <td>🥬</td>
+                    <td>🌳</td>
                 </tr>
                 <tr>
                     <td><input type="number" name="white" value="{{.White}}"/></td>
@@ -47,6 +50,33 @@
             </table>
             <input type="submit" value="Compute!" style="font-size: 1.5rem"/>
         </form>
+
+        <h2>You should put these lands in your deck</h2>
+
+        <table>
+            <tr>
+                <td>☀️</td>
+                <td>💧</td>
+                <td>💀</td>
+                <td>🔥</td>
+                <td>🌳</td>
+            </tr>
+            <tr>
+                <td>{{.AWhite}}</td>
+                <td>{{.ABlue}}</td>
+                <td>{{.ABlack}}</td>
+                <td>{{.ARed}}</td>
+                <td>{{.AGreen}}</td>      
+            </tr>
+        </table>
+
+        <h2>Getting started</h2>
+        <ol style="margin-top: 0px;">
+            <li>Count the number of non-land cards you have</li>
+            <li>Decide how much lands you want to add in the deck (for a 40 cards deck, Wizard advise you to put 17 lands and 23 non-lands)</li>
+            <li>For each color, sum the colored mana on your cards' costs (a 3️⃣☀️☀️ count as 2 white mana)</li>
+            <li>Enter all those values in the following page and click "Compute!"</li>
+        </ol>
 
     </body>
 </html>
