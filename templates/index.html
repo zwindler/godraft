@@ -6,22 +6,24 @@
         <title>godraft</title>
     </head>
     <body>
-        <h1>godraft</h1>
+        <h1>godraft 🎴 {{ if .Version }}{{ .Version }}{{ end }}</h1>
     
-        <h2>Q: How much lands of each type should I put in my deck?</h2>
+        <h2 style="margin-top: 0px;">Q: How much lands of each type should I put in my deck?</h2>
         <form method="POST" action="compute">
             <table style="width:100%">
                 <tr>
                     <td style="width:61%">
                         <h4>Number of cards in the deck</h4>
                         <div>
-                            <input type="range" name="ncards" value="{{.NCards}}" min="40" max="60" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0"><output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NCards}}</output>
+                            <input type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
+                            <output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NCards}}</output>
                         </div>
                     </td>
                     <td style="width:39%">
                         <h4>Number of lands</h4>
                         <div>
-                            <input type="range" name="nlands" value="{{.NLands}}" min="13" max="25" step="1" oninput="this.nextElementSibling.value = this.value" style="width:80%; margin-bottom:0; line-height:0"><output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NLands}}</output>
+                            <input type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:80%; margin-bottom:0; line-height:0">
+                            <output style="font-size: 2rem; text-align: right; display:inline-block; width:9%; line-height:0">{{.NLands}}</output>
                         </div>
                     </td>
                 </tr>
@@ -30,18 +32,48 @@
             <h4>Sum of the colored mana from your cards</h4>
             <table style="width:100%">
                 <tr>
-                    <td>☀️</td>
-                    <td>💧</td>
-                    <td>💀</td>
-                    <td>🔥</td>
-                    <td>🌳</td>
+                    <td style="text-align:center;">
+                        <h1 style="margin-top: 0px; margin-bottom: 0px">☀️</h1>
+                    </td>
+                    <td style="text-align:center;">
+                        <h1 style="margin-top: 0px; margin-bottom: 0px">💧</h1>
+                    </td>
+                    <td style="text-align:center;">
+                        <h1 style="margin-top: 0px; margin-bottom: 0px">💀</h1>
+                    </td>
+                    <td style="text-align:center;">
+                        <h1 style="margin-top: 0px; margin-bottom: 0px">🔥</h1>
+                    </td>
+                    <td style="text-align:center;">
+                        <h1 style="margin-top: 0px; margin-bottom: 0px">🌳</h1>
+                    </td>
                 </tr>
                 <tr>
-                    <td><h4><input type="number" name="white" value="{{.White}}"/></h4></td>
-                    <td><h4><input type="number" name="blue" value="{{.Blue}}"/></h4></td>
-                    <td><h4><input type="number" name="black" value="{{.Black}}"/></h4></td>
-                    <td><h4><input type="number" name="red" value="{{.Red}}"/></h4></td>
-                    <td><h4><input type="number" name="green" value="{{.Green}}"/></h4></td>      
+                    <td>
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                            <input type="number" min=0 name="white" value="{{.White}}"/>
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                            <input type="number" min=0 name="blue" value="{{.Blue}}"/>
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                            <input type="number" min=0 name="black" value="{{.Black}}"/>
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                            <input type="number" min=0 name="red" value="{{.Red}}"/>
+                        </h3>
+                    </td>
+                    <td>
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                            <input type="number" min=0 name="green" value="{{.Green}}"/>
+                        </h3>
+                    </td>      
                 </tr>
             </table>
             <input type="submit" value="Compute!" style="font-size: 1.5rem"/>
@@ -52,18 +84,38 @@
 
         <table style="width:100%">
             <tr>
-                <td><h2>☀️</h2></td>
-                <td>💧</td>
-                <td>💀</td>
-                <td>🔥</td>
-                <td>🌳</td>
+                <td style="text-align:center;">
+                    <h1 style="margin-top: 0px; margin-bottom: 0px">☀️</h1>
+                </td>
+                <td style="text-align:center;">
+                    <h1 style="margin-top: 0px; margin-bottom: 0px">💧</h1>
+                </td>
+                <td style="text-align:center;">
+                    <h1 style="margin-top: 0px; margin-bottom: 0px">💀</h1>
+                </td>
+                <td style="text-align:center;">
+                    <h1 style="margin-top: 0px; margin-bottom: 0px">🔥</h1>
+                </td>
+                <td style="text-align:center;">
+                    <h1 style="margin-top: 0px; margin-bottom: 0px">🌳</h1>
+                </td>
             </tr>
             <tr>
-                <td><h4>{{.AWhite}}</h4></td>
-                <td><h4>{{.ABlue}}</h4></td>
-                <td><h4>{{.ABlack}}</h4></td>
-                <td><h4>{{.ARed}}</h4></td>
-                <td><h4>{{.AGreen}}</h4></td>      
+                <td style="text-align:center;">
+                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.AWhite}}</h3>
+                </td>
+                <td style="text-align:center;">
+                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.ABlue}}</h3>
+                </td>
+                <td style="text-align:center;">
+                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.ABlack}}</h3>
+                </td>
+                <td style="text-align:center;">
+                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.ARed}}</h3>
+                </td>
+                <td style="text-align:center;">
+                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.AGreen}}</h3>
+                </td>      
             </tr>
         </table>
         {{ end }}
@@ -79,14 +131,14 @@
                 <ul>
                     <li>For example, a 3️⃣☀️☀️ count as 2 white mana, a 3️⃣☀️ count as one</li>
                 </ul>
-            <li>Enter all those values in the boxes and click "Compute!"</li>
+            <li>Enter all these values in the boxes and click "Compute!"</li>
         </ol>
 
         <h2>About</h2>
 
-        <p>godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
+        <p style="margin-top: 0px;">godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
 
-        <p>godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
+        <p style="margin-top: 0px;">godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
 
     </body>
 </html>

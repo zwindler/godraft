@@ -11,38 +11,32 @@ import (
 )
 
 var (
-	ErrTemplateParseFile = errors.New("error while parsing template file")
-	ErrTemplateExecute   = errors.New("error while execution of template file")
-	ErrInvalidNCards     = errors.New("invalid ncards value")
-	ErrInvalidNLands     = errors.New("invalid nlands value")
-	EmptyCompute         = Compute{
-		NCards: 40,
-		NLands: 17,
-		White:  0,
-		Blue:   0,
-		Black:  0,
-		Red:    0,
-		Green:  0,
-	}
-	MinCards = 40
-	MaxCards = 60
-	MinLands = 13
-	MaxLands = 25
+	ErrTemplateParseFile  = errors.New("error while parsing template file")
+	ErrTemplateExecute    = errors.New("error while execution of template file")
+	ErrInvalidNCards      = errors.New("invalid NCards value")
+	ErrInvalidNLands      = errors.New("invalid NLands value")
+	DefaultTemplateStruct = TemplateStruct{}
+	Version string
 )
 
-type Compute struct {
-	NCards int
-	NLands int
-	White  int
-	Blue   int
-	Black  int
-	Red    int
-	Green  int
-	AWhite float64
-	ABlue  float64
-	ABlack float64
-	ARed   float64
-	AGreen float64
+type TemplateStruct struct {
+	NCards   int
+	NLands   int
+	White    int
+	Blue     int
+	Black    int
+	Red      int
+	Green    int
+	MinCards int
+	MaxCards int
+	MinLands int
+	MaxLands int
+	AWhite   float64
+	ABlue    float64
+	ABlack   float64
+	ARed     float64
+	AGreen   float64
+	Version  string
 }
 
 func Register() {
@@ -58,7 +52,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		log.Error(ErrTemplateParseFile)
 	}
 
-	err = t.Execute(w, EmptyCompute)
+	err = t.Execute(w, DefaultTemplateStruct)
 	if err != nil {
 		log.Error(ErrTemplateExecute)
 	}
@@ -66,7 +60,8 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func computeHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
-	var templateStruct Compute
+	var templateStruct TemplateStruct
+	templateStruct.SetDefaults()
 
 	// TODO deal with errors
 	templateStruct.NCards, err = CheckNCards(r.FormValue("ncards"))
@@ -78,6 +73,7 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// TODO check input validity
+	// must be > 0 and probably < 100
 	templateStruct.White, err = strconv.Atoi(r.FormValue("white"))
 	if err != nil {
 		return
@@ -121,28 +117,43 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func CheckNCards(ncards string) (ncardsi int, err error) {
-	ncardsi, err = strconv.Atoi(ncards)
+func CheckNCards(NCards string) (NCardsInt int, err error) {
+	NCardsInt, err = strconv.Atoi(NCards)
 	if err != nil {
 		return 40, ErrInvalidNCards
 	} else {
-		if ncardsi < MinCards || ncardsi > MaxCards {
+		if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
 			return 40, ErrInvalidNCards
 		} else {
-			return ncardsi, nil
+			return NCardsInt, nil
 		}
 	}
 }
 
-func CheckNLands(nlands string) (nlandsi int, err error) {
-	nlandsi, err = strconv.Atoi(nlands)
+func CheckNLands(NLands string) (NLandsInt int, err error) {
+	NLandsInt, err = strconv.Atoi(NLands)
 	if err != nil {
 		return 17, ErrInvalidNLands
 	} else {
-		if nlandsi < MinLands || nlandsi > MaxLands {
+		if NLandsInt < DefaultTemplateStruct.MinLands || NLandsInt > DefaultTemplateStruct.MaxLands {
 			return 17, ErrInvalidNLands
 		} else {
-			return nlandsi, nil
+			return NLandsInt, nil
 		}
 	}
+}
+
+func (tmpl *TemplateStruct) SetDefaults() {
+	tmpl.Version = Version
+	tmpl.NCards = 40
+	tmpl.NLands = 17
+	tmpl.White = 0
+	tmpl.Blue = 0
+	tmpl.Black = 0
+	tmpl.Red = 0
+	tmpl.Green = 0
+	tmpl.MinCards = 40
+	tmpl.MaxCards = 60
+	tmpl.MinLands = 13
+	tmpl.MaxLands = 25
 }

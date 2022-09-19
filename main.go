@@ -12,6 +12,8 @@ func init() {
 }
 
 func main() {
+	services.Version = "1.0.0"
+	services.DefaultTemplateStruct.SetDefaults()
 	services.Register()
 	server.Start()
 }
