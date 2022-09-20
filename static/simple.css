@@ -98,6 +98,8 @@ body > footer {
 /* Format headers */
 h1 {
   font-size: 3rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 h2 {
@@ -107,7 +109,8 @@ h2 {
 
 h3 {
   font-size: 2rem;
-  margin-top: 3rem;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 h4 {
@@ -342,7 +345,7 @@ table {
 td,
 th {
   border: 1px solid var(--border);
-  text-align: left;
+  text-align: center;
   padding: 0.5rem;
 }
 
