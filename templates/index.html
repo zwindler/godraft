@@ -10,16 +10,24 @@
     
         <h2 style="margin-top: 0px;">Q: How much lands of each type should I put in my deck?</h2>
         <form method="POST" action="compute">
-            <h4>Number of cards in the deck</h4>
+            <h4>Number of (non-land) cards in the deck</h4>
             <div>
-                <input type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
+                <input class="ncards" type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NCards}}</output>
             </div>
             <h4>Number of lands</h4>
             <div>
-                <input type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
+                <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
             </div>
+
+            <script>
+                let ncards=document.querySelector(".ncards");
+                let nlands=document.querySelector(".nlands");
+                ncards.addEventListener("input",(e)=>{
+                    nlands.value=e.target.value;
+                })
+            </script>
             
             <h4>Sum of the colored mana from your cards</h4>
             <table style="width:100%">

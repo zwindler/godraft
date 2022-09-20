@@ -120,10 +120,10 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 func CheckNCards(NCards string) (NCardsInt int, err error) {
 	NCardsInt, err = strconv.Atoi(NCards)
 	if err != nil {
-		return 40, ErrInvalidNCards
+		return 23, ErrInvalidNCards
 	} else {
 		if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
-			return 40, ErrInvalidNCards
+			return 23, ErrInvalidNCards
 		} else {
 			return NCardsInt, nil
 		}
@@ -152,8 +152,8 @@ func (tmpl *TemplateStruct) SetDefaults() {
 	tmpl.Black = 0
 	tmpl.Red = 0
 	tmpl.Green = 0
-	tmpl.MinCards = 40
-	tmpl.MaxCards = 60
+	tmpl.MinCards = 20
+	tmpl.MaxCards = 40
 	tmpl.MinLands = 13
 	tmpl.MaxLands = 25
 }
