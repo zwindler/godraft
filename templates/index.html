@@ -15,7 +15,7 @@
                 <input class="ncards" type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NCards}}</output>
             </div>
-            <h4>Number of lands (estimated from the number of non-lands)</h4>
+            <h4>Number of lands (suggested from the number of non-lands)</h4>
             <div>
                 <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
