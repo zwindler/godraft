@@ -120,10 +120,10 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 func CheckNCards(NCards string) (NCardsInt int, err error) {
 	NCardsInt, err = strconv.Atoi(NCards)
 	if err != nil {
-		return 23, ErrInvalidNCards
+		return DefaultTemplateStruct.NCards, ErrInvalidNCards
 	} else {
 		if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
-			return 23, ErrInvalidNCards
+			return DefaultTemplateStruct.NCards, ErrInvalidNCards
 		} else {
 			return NCardsInt, nil
 		}
@@ -133,10 +133,10 @@ func CheckNCards(NCards string) (NCardsInt int, err error) {
 func CheckNLands(NLands string) (NLandsInt int, err error) {
 	NLandsInt, err = strconv.Atoi(NLands)
 	if err != nil {
-		return 17, ErrInvalidNLands
+		return DefaultTemplateStruct.NLands, ErrInvalidNLands
 	} else {
 		if NLandsInt < DefaultTemplateStruct.MinLands || NLandsInt > DefaultTemplateStruct.MaxLands {
-			return 17, ErrInvalidNLands
+			return DefaultTemplateStruct.NLands, ErrInvalidNLands
 		} else {
 			return NLandsInt, nil
 		}
@@ -145,15 +145,15 @@ func CheckNLands(NLands string) (NLandsInt int, err error) {
 
 func (tmpl *TemplateStruct) SetDefaults() {
 	tmpl.Version = Version
-	tmpl.NCards = 40
+	tmpl.MinCards = 20
+	tmpl.NCards = 23
+	tmpl.MaxCards = 40
+	tmpl.MinLands = 13
 	tmpl.NLands = 17
+	tmpl.MaxLands = 25
 	tmpl.White = 0
 	tmpl.Blue = 0
 	tmpl.Black = 0
 	tmpl.Red = 0
 	tmpl.Green = 0
-	tmpl.MinCards = 20
-	tmpl.MaxCards = 40
-	tmpl.MinLands = 13
-	tmpl.MaxLands = 25
 }
