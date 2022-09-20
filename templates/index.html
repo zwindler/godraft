@@ -8,7 +8,7 @@
     <body>
         <h1>godraft 🎴 {{ if .Version }}(v{{ .Version }}){{ end }}</h1>
     
-        <h2 style="margin-top: 0px;">Q: How much lands of each type should I put in my deck?</h2>
+        <h2>Q: How much lands of each type should I put in my deck?</h2>
         <form method="POST" action="compute">
             <h4>Number of (non-land) cards in the deck</h4>
             <div>
@@ -48,45 +48,45 @@
             <h4>Sum of the colored mana from your cards</h4>
             <table style="width:100%">
                 <tr>
-                    <td style="text-align:center;">
-                        <h1 style="margin-top: 0px; margin-bottom: 0px">☀️</h1>
+                    <td>
+                        <h1>☀️</h1>
                     </td>
-                    <td style="text-align:center;">
-                        <h1 style="margin-top: 0px; margin-bottom: 0px">💧</h1>
+                    <td>
+                        <h1>💧</h1>
                     </td>
-                    <td style="text-align:center;">
-                        <h1 style="margin-top: 0px; margin-bottom: 0px">💀</h1>
+                    <td>
+                        <h1>💀</h1>
                     </td>
-                    <td style="text-align:center;">
-                        <h1 style="margin-top: 0px; margin-bottom: 0px">🔥</h1>
+                    <td>
+                        <h1>🔥</h1>
                     </td>
-                    <td style="text-align:center;">
-                        <h1 style="margin-top: 0px; margin-bottom: 0px">🌳</h1>
+                    <td>
+                        <h1>🌳</h1>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                        <h3>
                             <input type="number" min=0 name="white" value="{{.White}}"/>
                         </h3>
                     </td>
                     <td>
-                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                        <h3>
                             <input type="number" min=0 name="blue" value="{{.Blue}}"/>
                         </h3>
                     </td>
                     <td>
-                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                        <h3>
                             <input type="number" min=0 name="black" value="{{.Black}}"/>
                         </h3>
                     </td>
                     <td>
-                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                        <h3>
                             <input type="number" min=0 name="red" value="{{.Red}}"/>
                         </h3>
                     </td>
                     <td>
-                        <h3 style="margin-top: 0px; margin-bottom: 0px; text-align:center;">
+                        <h3>
                             <input type="number" min=0 name="green" value="{{.Green}}"/>
                         </h3>
                     </td>      
@@ -100,37 +100,37 @@
 
         <table style="width:100%">
             <tr>
-                <td style="text-align:center;">
-                    <h1 style="margin-top: 0px; margin-bottom: 0px">☀️</h1>
+                <td>
+                    <h1>☀️</h1>
                 </td>
-                <td style="text-align:center;">
-                    <h1 style="margin-top: 0px; margin-bottom: 0px">💧</h1>
+                <td>
+                    <h1>💧</h1>
                 </td>
-                <td style="text-align:center;">
-                    <h1 style="margin-top: 0px; margin-bottom: 0px">💀</h1>
+                <td>
+                    <h1>💀</h1>
                 </td>
-                <td style="text-align:center;">
-                    <h1 style="margin-top: 0px; margin-bottom: 0px">🔥</h1>
+                <td>
+                    <h1>🔥</h1>
                 </td>
-                <td style="text-align:center;">
-                    <h1 style="margin-top: 0px; margin-bottom: 0px">🌳</h1>
+                <td>
+                    <h1>🌳</h1>
                 </td>
             </tr>
             <tr>
-                <td style="text-align:center;">
-                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.AWhite}}</h3>
+                <td>
+                    <h3>{{.AWhite}}</h3>
                 </td>
-                <td style="text-align:center;">
-                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.ABlue}}</h3>
+                <td>
+                    <h3>{{.ABlue}}</h3>
                 </td>
-                <td style="text-align:center;">
-                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.ABlack}}</h3>
+                <td>
+                    <h3>{{.ABlack}}</h3>
                 </td>
-                <td style="text-align:center;">
-                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.ARed}}</h3>
+                <td>
+                    <h3>{{.ARed}}</h3>
                 </td>
-                <td style="text-align:center;">
-                    <h3 style="margin-top: 0px; margin-bottom: 0px">{{.AGreen}}</h3>
+                <td>
+                    <h3>{{.AGreen}}</h3>
                 </td>      
             </tr>
         </table>
