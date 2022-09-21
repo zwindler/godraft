@@ -8,14 +8,14 @@
     <body>
         <h1>godraft 🎴 {{ if .Version }}(v{{ .Version }}){{ end }}</h1>
     
-        <h2>Q: Combien de terrains devrais-je mettre dans mon deck ?</h2>
+        <h2>Q: How many lands of each type should I put in my deck?</h2>
         <form method="POST" action="compute">
-            <h4>Nombre de cartes (non-terrain) à mettre dans le deck</h4>
+            <h4>Number of (non-land) cards in the deck</h4>
             <div>
                 <input class="ncards" type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NCards}}</output>
             </div>
-            <h4>Nombre de terrains (suggeré en fonction du nombre de cartes)</h4>
+            <h4>Number of lands (suggested from the number of non-lands)</h4>
             <div>
                 <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
@@ -45,7 +45,7 @@
                 })
             </script>
             
-            <h4>Somme des manas colorés pour chaque couleur</h4>
+            <h4>Sum of the colored mana from your cards</h4>
             <table style="width:100%">
                 <tr>
                     <td>
@@ -96,7 +96,7 @@
         </form>
 
         {{ if or (.AWhite) (.ABlue) (.ABlack) (.ARed) (.AGreen) }}
-        <h2>R: Vous devriez mettre ces terains dans votre deck</h2>
+        <h2>A: You should put these lands in your deck</h2>
 
         <table style="width:100%">
             <tr>
@@ -136,25 +136,25 @@
         </table>
         {{ end }}
 
-        <h2>Aide</h2>
+        <h2>Help / getting started</h2>
         <ol style="margin-top: 0px;">
-            <li>Comptez le nombre de cartes non-terrain que vous voulez mettre dans le deck.</li>
-            <li>Choisissez ensuite combien de terrain vous voulez mettre.</li>
+            <li>Count the number of non-land cards you have</li>
+            <li>Decide how much lands you want to add in the deck</li>
                 <ul>
-                    <li>En draft, pour un deck de 40 cartes, il est souvent conseillé de mettre 17 terrains pour 23 cartes non-terrain.</li>
+                    <li>For a 40 cards deck, it's advised to put 17 lands and 23 non-lands</li>
                 </ul>
-            <li>Pour chaque couleur, faites la somme des manas colorés des coûts de manas de vos cartes</li>
+            <li>For each color, sum the colored mana on your cards' costs
                 <ul>
-                    <li>Par exemple, une carte 3️⃣☀️☀️ comptera pour 2 manas blancs, une 3️⃣☀️ pour un mana blanc</li>
+                    <li>For example, a 3️⃣☀️☀️ count as 2 white mana, a 3️⃣☀️ count as one</li>
                 </ul>
-            <li>Une fois les valeurs rentrées, cliquez sur "Calculer !"</li>
+            <li>Enter all these values in the boxes and click "Compute!"</li>
         </ol>
 
-        <h2>A propos</h2>
+        <h2>About</h2>
 
-        <p style="margin-top: 0px;">godraft est une application web ayant pour but de faciliter la vie des joueurs lors de "Drafts" de Magic the Gathering(tm). La première version inclus un outil pour calculer combien de terrains de chaque couleur doivent être mis dans le deck.</p>
+        <p style="margin-top: 0px;">godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
 
-        <p style="margin-top: 0px;">godraft est un logiciel open source écrit par <a href='https://twitter.com/zwindler'>zwindler</a>. Le code source peut être  <a href="https://github.com/zwindler/godraft">trouvé ici</a>. Les problèmes/suggestions peuvent être <a href="https://github.com/zwindler/godraft/issues">remontées là</a>.</p>
+        <p style="margin-top: 0px;">godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
 
     </body>
 </html>
