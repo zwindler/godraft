@@ -73,26 +73,27 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// TODO check input validity
+	// TODO deal with errors properly
 	// must be > 0 and probably < 100
 	templateStruct.White, err = strconv.Atoi(r.FormValue("white"))
 	if err != nil {
-		return
+		templateStruct.White = 0
 	}
 	templateStruct.Blue, err = strconv.Atoi(r.FormValue("blue"))
 	if err != nil {
-		return
+		templateStruct.Blue = 0
 	}
 	templateStruct.Black, err = strconv.Atoi(r.FormValue("black"))
 	if err != nil {
-		return
+		templateStruct.Black = 0
 	}
 	templateStruct.Red, err = strconv.Atoi(r.FormValue("red"))
 	if err != nil {
-		return
+		templateStruct.Red = 0
 	}
 	templateStruct.Green, err = strconv.Atoi(r.FormValue("green"))
 	if err != nil {
-		return
+		templateStruct.Green = 0
 	}
 
 	sumColored := templateStruct.White + templateStruct.Blue + templateStruct.Black + templateStruct.Red + templateStruct.Green
