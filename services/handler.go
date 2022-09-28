@@ -97,13 +97,35 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 
 	sumColored := templateStruct.White + templateStruct.Blue + templateStruct.Black + templateStruct.Red + templateStruct.Green
 	if sumColored != 0 {
-		var ratio float64 = float64(sumColored) / float64(templateStruct.NLands)
+		var colors float64 = 0
+		var minLandsPerColor float64
 
-		templateStruct.AWhite = math.Round(float64(templateStruct.White)/ratio*10) / 10
-		templateStruct.ABlue = math.Round(float64(templateStruct.Blue)/ratio*10) / 10
-		templateStruct.ABlack = math.Round(float64(templateStruct.Black)/ratio*10) / 10
-		templateStruct.ARed = math.Round(float64(templateStruct.Red)/ratio*10) / 10
-		templateStruct.AGreen = math.Round(float64(templateStruct.Green)/ratio*10) / 10
+		// count how many colors we have
+		var items []int = []int{templateStruct.White, templateStruct.Blue, templateStruct.Black, templateStruct.Red, templateStruct.Green}
+		for _, value := range items {
+			if value > 0 {
+				colors += 1
+			}
+		}
+
+		// if we have 4 or 5 colors, set "min lands per color" to 2
+		// if we have 2 or 3 colors, set "min lands per color" to 3
+		// if we only have 1 color, it doesn't matter
+		if colors >= 4 {
+			minLandsPerColor = 2
+		} else {
+			minLandsPerColor = 3
+		}
+
+		// computate the ratio of lands per color without lands we add to enforce minimums
+		var ratio float64 = float64(sumColored) / (float64(templateStruct.NLands) - minLandsPerColor * colors)
+
+		// for each color, add minLandsPerColor and ratio of remaining lands per color
+		templateStruct.AWhite = computateLandsForColor(templateStruct.White, minLandsPerColor, ratio)
+		templateStruct.ABlue = computateLandsForColor(templateStruct.Blue, minLandsPerColor, ratio)
+		templateStruct.ABlack = computateLandsForColor(templateStruct.Black, minLandsPerColor, ratio)
+		templateStruct.ARed = computateLandsForColor(templateStruct.Red, minLandsPerColor, ratio)
+		templateStruct.AGreen = computateLandsForColor(templateStruct.Green, minLandsPerColor, ratio)
 	}
 
 	t, err := template.ParseFiles("templates/index.html")
@@ -156,4 +178,12 @@ func (tmpl *TemplateStruct) SetDefaults() {
 	tmpl.Black = 0
 	tmpl.Red = 0
 	tmpl.Green = 0
+}
+
+func computateLandsForColor(color int, minLandsPerColor float64, ratio float64) (float64) {
+	if color != 0 {
+		return minLandsPerColor + math.Round(float64(color)/ratio*10) / 10
+	} else {
+		return 0
+	}
 }
