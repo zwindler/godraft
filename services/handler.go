@@ -3,7 +3,6 @@ package services
 import (
 	"errors"
 	"html/template"
-	"math"
 	"net/http"
 	"strconv"
 
@@ -19,29 +18,9 @@ var (
 	Version               string
 )
 
-type TemplateStruct struct {
-	NCards   int
-	NLands   int
-	White    int
-	Blue     int
-	Black    int
-	Red      int
-	Green    int
-	MinCards int
-	MaxCards int
-	MinLands int
-	MaxLands int
-	AWhite   float64
-	ABlue    float64
-	ABlack   float64
-	ARed     float64
-	AGreen   float64
-	Version  string
-}
-
 func Register() {
 	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/compute", computeHandler)
+	http.HandleFunc("/step2", stepTwoHandler)
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
@@ -58,19 +37,24 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func computeHandler(w http.ResponseWriter, r *http.Request) {
+func stepTwoHandler(w http.ResponseWriter, r *http.Request) {
 	var err error
+
 	var templateStruct TemplateStruct
-	templateStruct.SetDefaults()
+	// TODO deal with errors
+	deckFormat := r.FormValue("deckformat")
+	deckStyle := r.FormValue("deckstyle")
+
+	templateStruct.SetDefaults(deckFormat, deckStyle)
 
 	// TODO deal with errors
 	templateStruct.NCards, err = CheckNCards(r.FormValue("ncards"))
 	if err != nil {
-		return
+		log.Warn("fail to read ncards")
 	}
 	templateStruct.NLands, err = CheckNLands(r.FormValue("nlands"))
 	if err != nil {
-		return
+		log.Warn("fail to read nlands")
 	}
 	// TODO check input validity
 	// TODO deal with errors properly
@@ -118,18 +102,18 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 			minLandsPerColor = 3
 		}
 
-		// computate the ratio of lands per color without lands we add to enforce minimums
-		var ratio float64 = float64(sumColored) / (float64(templateStruct.NLands) - minLandsPerColor * colors)
+		// compute the ratio of lands per color without lands we add to enforce minimums
+		var ratio float64 = float64(sumColored) / (float64(templateStruct.NLands) - minLandsPerColor*colors)
 
 		// for each color, add minLandsPerColor and ratio of remaining lands per color
-		templateStruct.AWhite = computateLandsForColor(templateStruct.White, minLandsPerColor, ratio)
-		templateStruct.ABlue = computateLandsForColor(templateStruct.Blue, minLandsPerColor, ratio)
-		templateStruct.ABlack = computateLandsForColor(templateStruct.Black, minLandsPerColor, ratio)
-		templateStruct.ARed = computateLandsForColor(templateStruct.Red, minLandsPerColor, ratio)
-		templateStruct.AGreen = computateLandsForColor(templateStruct.Green, minLandsPerColor, ratio)
+		templateStruct.AWhite = computeLandsForColor(templateStruct.White, minLandsPerColor, ratio)
+		templateStruct.ABlue = computeLandsForColor(templateStruct.Blue, minLandsPerColor, ratio)
+		templateStruct.ABlack = computeLandsForColor(templateStruct.Black, minLandsPerColor, ratio)
+		templateStruct.ARed = computeLandsForColor(templateStruct.Red, minLandsPerColor, ratio)
+		templateStruct.AGreen = computeLandsForColor(templateStruct.Green, minLandsPerColor, ratio)
 	}
 
-	t, err := template.ParseFiles("templates/index.html")
+	t, err := template.ParseFiles("templates/step2.html")
 	if err != nil {
 		log.Error(ErrTemplateParseFile)
 	}
@@ -137,54 +121,5 @@ func computeHandler(w http.ResponseWriter, r *http.Request) {
 	err = t.Execute(w, templateStruct)
 	if err != nil {
 		log.Error(ErrTemplateExecute)
-	}
-}
-
-func CheckNCards(NCards string) (NCardsInt int, err error) {
-	NCardsInt, err = strconv.Atoi(NCards)
-	if err != nil {
-		return DefaultTemplateStruct.NCards, ErrInvalidNCards
-	} else {
-		if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
-			return DefaultTemplateStruct.NCards, ErrInvalidNCards
-		} else {
-			return NCardsInt, nil
-		}
-	}
-}
-
-func CheckNLands(NLands string) (NLandsInt int, err error) {
-	NLandsInt, err = strconv.Atoi(NLands)
-	if err != nil {
-		return DefaultTemplateStruct.NLands, ErrInvalidNLands
-	} else {
-		if NLandsInt < DefaultTemplateStruct.MinLands || NLandsInt > DefaultTemplateStruct.MaxLands {
-			return DefaultTemplateStruct.NLands, ErrInvalidNLands
-		} else {
-			return NLandsInt, nil
-		}
-	}
-}
-
-func (tmpl *TemplateStruct) SetDefaults() {
-	tmpl.Version = Version
-	tmpl.MinCards = 20
-	tmpl.NCards = 23
-	tmpl.MaxCards = 40
-	tmpl.MinLands = 13
-	tmpl.NLands = 17
-	tmpl.MaxLands = 25
-	tmpl.White = 0
-	tmpl.Blue = 0
-	tmpl.Black = 0
-	tmpl.Red = 0
-	tmpl.Green = 0
-}
-
-func computateLandsForColor(color int, minLandsPerColor float64, ratio float64) (float64) {
-	if color != 0 {
-		return minLandsPerColor + math.Round(float64(color)/ratio*10) / 10
-	} else {
-		return 0
 	}
 }

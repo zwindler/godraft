@@ -16,7 +16,7 @@ func init() {
 func main() {
 	services.Version = Version
 	log.Printf("godraft version v%s", services.Version)
-	services.DefaultTemplateStruct.SetDefaults()
+	services.DefaultTemplateStruct.SetDefaults("draft", "midrange")
 	services.Register()
 	server.Start()
 }

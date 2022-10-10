@@ -7,15 +7,57 @@
     </head>
     <body>
         <h1>godraft 🎴 {{ if .Version }}(v{{ .Version }}){{ end }}</h1>
-    
-        <h2>Q: How many lands of each type should I put in my deck?</h2>
+
+        <form method="POST" action="prepare">
+            <table>
+                <tr>
+                    <td>
+                        <h4>Format</h4>
+                    </td>
+                    <td>
+                        <input type="radio" id="draft" name="deckformat" value="draft"
+                        checked>
+                        <label for="draft">Draft</label> (40 cartes minimum)
+                    </td>
+                    <td>
+                        <input type="radio" id="standard" name="deckformat" value="standard">
+                        <label for="standard">Standard</label> (60 cartes minimum)
+                    </td>
+                    <td>
+                        <input type="radio" id="commander" name="deckformat" value="commander">
+                        <label for="commander">Commander</label> (100 cartes)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h4>Style de jeu</h4>
+                    </td>
+                    <td>
+                        <input type="radio" id="aggro" name="deckstyle" value="aggro">
+                        <label for="aggro">Aggro</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="midrange" name="deckstyle" value="midrange"
+                        checked>
+                <label for="midrange">Midrange</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="control" name="deckstyle" value="control">
+                        <label for="control">Control</label>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" value="Préparer !" style="font-size: 1.5rem"/>
+        </form>
+
+        <h2>Etape 2 : combien de terrains devrais-je mettre dans mon deck ?</h2>
         <form method="POST" action="compute">
-            <h4>Number of (non-land) cards in the deck</h4>
+            <h4>Nombre de cartes (non-terrain) à mettre dans le deck</h4>
             <div>
                 <input class="ncards" type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NCards}}</output>
             </div>
-            <h4>Number of lands (suggested from the number of non-lands)</h4>
+            <h4>Nombre de terrains (suggéré en fonction du nombre de cartes)</h4>
             <div>
                 <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
@@ -45,7 +87,7 @@
                 })
             </script>
             
-            <h4>Sum of the colored mana from your cards</h4>
+            <h4>Somme des manas colorés pour chaque couleur</h4>
             <table style="width:100%">
                 <tr>
                     <td>
@@ -92,11 +134,11 @@
                     </td>      
                 </tr>
             </table>
-            <input type="submit" value="Compute!" style="font-size: 1.5rem"/>
+            <input type="submit" value="Calculer !" style="font-size: 1.5rem"/>
         </form>
 
         {{ if or (.AWhite) (.ABlue) (.ABlack) (.ARed) (.AGreen) }}
-        <h2>A: You should put these lands in your deck</h2>
+        <h2>R: Vous devriez mettre ces terrains dans votre deck</h2>
 
         <table style="width:100%">
             <tr>
@@ -136,25 +178,18 @@
         </table>
         {{ end }}
 
-        <h2>Help / getting started</h2>
+        <h2>Aide</h2>
         <ol style="margin-top: 0px;">
-            <li>Count the number of non-land cards you have</li>
-            <li>Decide how much lands you want to add in the deck</li>
+            <li>Comptez le nombre de cartes non-terrain que vous voulez mettre dans le deck.</li>
+            <li>Choisissez ensuite combien de terrain vous voulez mettre.</li>
                 <ul>
-                    <li>For a 40 cards deck, it's advised to put 17 lands and 23 non-lands</li>
+                    <li>En draft, pour un deck de 40 cartes, il est souvent conseillé de mettre 17 terrains pour 23 cartes non-terrain.</li>
                 </ul>
-            <li>For each color, sum the colored mana on your cards' costs
+            <li>Pour chaque couleur, faites la somme des manas colorés des coûts de manas de vos cartes</li>
                 <ul>
-                    <li>For example, a 3️⃣☀️☀️ count as 2 white mana, a 3️⃣☀️ count as one</li>
+                    <li>Par exemple, une carte 3️⃣☀️☀️ comptera pour 2 manas blancs, une 3️⃣☀️ pour un mana blanc</li>
                 </ul>
-            <li>Enter all these values in the boxes and click "Compute!"</li>
+            <li>Une fois les valeurs rentrées, cliquez sur "Calculer !"</li>
         </ol>
-
-        <h2>About</h2>
-
-        <p style="margin-top: 0px;">godraft is a simple webapp to help players during Magic the Gathering(tm) drafts. First version features a tool to compute how much lands of each colors you should add to your draft deck.</p>
-
-        <p style="margin-top: 0px;">godraft is open source. Source code can be <a href="https://github.com/zwindler/godraft">found here</a>. Issues/suggestions can be <a href="https://github.com/zwindler/godraft/issues">submitted there</a>.</p>
-
     </body>
 </html>

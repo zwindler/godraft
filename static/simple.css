@@ -546,3 +546,7 @@ pre code {
   margin: 0;
   padding: 0;
 }
+
+label {
+  font-size: 1.5rem;
+}
