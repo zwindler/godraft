@@ -37,12 +37,24 @@
                     // you can't have less than {{.MinCards}} cards in your deck
                     if (count < {{.MinCards}}){
                         nlands.value = {{.MinCards}} - nnonlandsInt;
+                        console.log("less than {{.MinCards}}")
                         console.log(nlands.value);
                     }
-                    // if you have more than {{.MinCards}}, then you should have more lands than {{.NLands}}
+                    // if you have more than {{.MinCards}} cards in your deck, then you should have more lands than {{.NLands}}
                     else {
-                        nlands.value = Math.round({{.NLands}} * (nnonlandsInt + nlandsInt) / {{.MinCards}});
-                        console.log(nlands.value);
+                        suggestionLandsInt = Math.round({{.NLands}} * (count) / {{.MinCards}});
+                        // edge case where we ajusted the lands to fill missing nonland cards to obtain {{.MinCards}}
+                        if (suggestionLandsInt + nnonlandsInt < {{.MinCards}}) {
+                            nlands.value = {{.MinCards}} - nnonlandsInt;
+                            console.log("edge case");
+                            console.log(nlands.value);
+                        }
+                        else {
+                            nlands.value = suggestionLandsInt;
+                            console.log("more than {{.MinCards}}");
+                            console.log(nlands.value);
+                        }
+
                     }
                     nlandsValue.value = nlands.value;
                 })

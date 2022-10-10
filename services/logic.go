@@ -91,7 +91,7 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 	// define defaults depending on game type
 	if tmpl.DeckFormat == "standard" {
 		tmpl.MinCards = 60
-		tmpl.MaxCards = 100
+		tmpl.MaxCards = 80
 		tmpl.NLands = 22
 	} else {
 		if tmpl.DeckFormat == "commander" {
@@ -101,14 +101,14 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 		} else {
 			// draft
 			tmpl.MinCards = 40
-			tmpl.MaxCards = 60
+			tmpl.MaxCards = 52
 			tmpl.NLands = 17
 		}
 	}
 
 	// set sliders limits depending on game type
-	tmpl.MinLands = int(float64(tmpl.NLands) * 0.5)
-	tmpl.MaxLands = int(float64(tmpl.NLands) * 1.5)
+	tmpl.MinLands = int(float64(tmpl.NLands) * 0.75)
+	tmpl.MaxLands = int(float64(tmpl.NLands) * 1.33)
 
 	// adapt defaults depending on game style
 	if tmpl.DeckStyle == "aggro" {
@@ -118,9 +118,18 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 			tmpl.NLands = int(float64(tmpl.NLands) * 1.1)
 		}
 	}
+
+	// set boundaries for lands
 	tmpl.NNonLands = tmpl.MinCards - tmpl.NLands
 	tmpl.MinNonLands = tmpl.MinCards - tmpl.MaxLands
-	tmpl.MaxNonLands = tmpl.MaxCards - tmpl.MinLands
+	// commander is more restrictive so I must set different rules
+	if deckFormat == "commander" {
+		tmpl.MaxNonLands = tmpl.MaxCards - tmpl.MinLands
+	} else {
+		// I artificially allow more cards by allowing
+		tmpl.MaxNonLands = tmpl.MaxCards - tmpl.MaxLands
+	}
+
 }
 
 func computeLandsForColor(color int, minLandsPerColor float64, ratio float64) float64 {
