@@ -12,7 +12,9 @@
 
         <h4>Format : {{ .DeckFormat }} <br/> Style de jeu : {{ .DeckStyle }}</h4>
 
-        <form method="POST" action="compute">
+        <form method="POST" action="step2">
+            <input type="hidden" id="{{.DeckFormat}}" name="deckformat" value="{{.DeckFormat}}">
+            <input type="hidden" id="{{.DeckStyle}}" name="deckstyle" value="{{.DeckStyle}}">
             <h4>Nombre de cartes "non-terrain"</h4>
             <div>
                 <input class="nnonlands" type="range" name="nnonlands" value="{{.NNonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
@@ -54,7 +56,7 @@
                             console.log("more than {{.MinCards}}");
                             console.log(nlands.value);
                         }
-
+	                // TODO check max boundaries for commander
                     }
                     nlandsValue.value = nlands.value;
                 })
@@ -111,7 +113,7 @@
         </form>
 
         {{ if or (.AWhite) (.ABlue) (.ABlack) (.ARed) (.AGreen) }}
-        <h2>R: Vous devriez mettre ces terrains dans votre deck</h2>
+        <h2>Réponse : vous devriez mettre ces terrains dans votre deck</h2>
 
         <table style="width:100%">
             <tr>

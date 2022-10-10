@@ -40,6 +40,7 @@ type TemplateStruct struct {
 }
 
 func CheckNNonLands(NNonLands string) (NNonLandsInt int, err error) {
+	// TODO don't use DefaultTemplateStruct
 	if NNonLands == "" {
 		return DefaultTemplateStruct.NNonLands, ErrNoNNonLands
 	} else {
@@ -47,7 +48,7 @@ func CheckNNonLands(NNonLands string) (NNonLandsInt int, err error) {
 		if err != nil {
 			return DefaultTemplateStruct.NNonLands, ErrInvalidNNonLands
 		} else {
-			if NNonLandsInt < DefaultTemplateStruct.MinCards || NNonLandsInt > DefaultTemplateStruct.MaxCards {
+			if NNonLandsInt < DefaultTemplateStruct.MinNonLands || NNonLandsInt > DefaultTemplateStruct.MaxCards {
 				return DefaultTemplateStruct.NNonLands, ErrInvalidNNonLands
 			} else {
 				return NNonLandsInt, nil
@@ -57,6 +58,7 @@ func CheckNNonLands(NNonLands string) (NNonLandsInt int, err error) {
 }
 
 func CheckNLands(NLands string) (NLandsInt int, err error) {
+	// TODO don't use DefaultTemplateStruct
 	if NLands == "" {
 		return DefaultTemplateStruct.NLands, ErrNoNLands
 	} else {
