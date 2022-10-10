@@ -15,14 +15,14 @@
         <form method="POST" action="step2">
             <input type="hidden" id="{{.DeckFormat}}" name="deckformat" value="{{.DeckFormat}}">
             <input type="hidden" id="{{.DeckStyle}}" name="deckstyle" value="{{.DeckStyle}}">
-            <h4>Nombre de cartes "non-terrain"</h4>
             <div>
-                <input class="nnonlands" type="range" name="nnonlands" value="{{.NNonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
+                <h4>Nombre de cartes "non-terrain"</h4>
+                <input class="nnonlands" type="range" name="nnonlands" value="{{.NNonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NNonLands}}</output>
             </div>
-            <h4>Nombre de terrains (suggestion)</h4>
             <div>
-                <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
+            <h4>Nombre de terrains (suggestion)</h4>
+                <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
                 <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
             </div>
 
@@ -71,7 +71,7 @@
             </script>
             
             <h4>Somme des manas colorés pour chaque couleur</h4>
-            <table style="width:100%">
+            <table style="width:100%; margin-top:0px">
                 <tr>
                     <td>
                         <h1>☀️</h1>
