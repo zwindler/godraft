@@ -39,37 +39,43 @@ type TemplateStruct struct {
 	Version     string
 }
 
-func CheckNNonLands(NNonLands string) (NNonLandsInt int, err error) {
-	// TODO don't use DefaultTemplateStruct
+func (tmpl *TemplateStruct) CheckNNonLands(NNonLands string) (err error) {
 	if NNonLands == "" {
-		return DefaultTemplateStruct.NNonLands, ErrNoNNonLands
+		// if empty, return and keep defaults
+		return ErrNoNNonLands
 	} else {
-		NNonLandsInt, err = strconv.Atoi(NNonLands)
+		NNonLandsInt, err := strconv.Atoi(NNonLands)
 		if err != nil {
-			return DefaultTemplateStruct.NNonLands, ErrInvalidNNonLands
+			// str to int failure
+			return ErrInvalidNNonLands
 		} else {
-			if NNonLandsInt < DefaultTemplateStruct.MinNonLands || NNonLandsInt > DefaultTemplateStruct.MaxCards {
-				return DefaultTemplateStruct.NNonLands, ErrInvalidNNonLands
+			if NNonLandsInt < tmpl.MinNonLands || NNonLandsInt > tmpl.MaxCards {
+				// nnonlands doesn't fit in format boundaries
+				return ErrInvalidNNonLands
 			} else {
-				return NNonLandsInt, nil
+				tmpl.NNonLands = NNonLandsInt
+				return nil
 			}
 		}
 	}
 }
 
-func CheckNLands(NLands string) (NLandsInt int, err error) {
-	// TODO don't use DefaultTemplateStruct
+func (tmpl *TemplateStruct) CheckNLands(NLands string) (err error) {
 	if NLands == "" {
-		return DefaultTemplateStruct.NLands, ErrNoNLands
+		// if empty, return and keep defaults
+		return ErrNoNLands
 	} else {
-		NLandsInt, err = strconv.Atoi(NLands)
+		NLandsInt, err := strconv.Atoi(NLands)
 		if err != nil {
-			return DefaultTemplateStruct.NLands, ErrInvalidNLands
+			// str to int failure
+			return ErrInvalidNLands
 		} else {
-			if NLandsInt < DefaultTemplateStruct.MinLands || NLandsInt > DefaultTemplateStruct.MaxLands {
-				return DefaultTemplateStruct.NLands, ErrInvalidNLands
+			if NLandsInt < tmpl.MinLands || NLandsInt > tmpl.MaxLands {
+				// nlands doesn't fit in format boundaries
+				return ErrInvalidNLands
 			} else {
-				return NLandsInt, nil
+				tmpl.NLands = NLandsInt
+				return nil
 			}
 		}
 	}
@@ -145,10 +151,45 @@ func computeLandsForColor(color int, minLandsPerColor float64, ratio float64) fl
 // TODO check input validity
 // TODO deal with errors properly
 // must be > 0 and probably < 100
-func getLandFromForm(color string) int {
+func getLandsFromForm(color string) int {
 	value, err := strconv.Atoi(color)
 	if err != nil {
 		return 0
 	}
 	return value
+}
+
+func (tmpl *TemplateStruct) suggestLands() {
+	sumColored := tmpl.White + tmpl.Blue + tmpl.Black + tmpl.Red + tmpl.Green
+	if sumColored != 0 {
+		var colors float64 = 0
+		var minLandsPerColor float64
+
+		// count how many colors we have
+		var items []int = []int{tmpl.White, tmpl.Blue, tmpl.Black, tmpl.Red, tmpl.Green}
+		for _, value := range items {
+			if value > 0 {
+				colors += 1
+			}
+		}
+
+		// if we have 4 or 5 colors, set "min lands per color" to 2
+		// if we have 2 or 3 colors, set "min lands per color" to 3
+		// if we only have 1 color, it doesn't matter
+		if colors >= 4 {
+			minLandsPerColor = 2
+		} else {
+			minLandsPerColor = 3
+		}
+
+		// compute the ratio of lands per color without lands we add to enforce minimums
+		var ratio float64 = float64(sumColored) / (float64(tmpl.NLands) - minLandsPerColor*colors)
+
+		// for each color, add minLandsPerColor and ratio of remaining lands per color
+		tmpl.AWhite = computeLandsForColor(tmpl.White, minLandsPerColor, ratio)
+		tmpl.ABlue = computeLandsForColor(tmpl.Blue, minLandsPerColor, ratio)
+		tmpl.ABlack = computeLandsForColor(tmpl.Black, minLandsPerColor, ratio)
+		tmpl.ARed = computeLandsForColor(tmpl.Red, minLandsPerColor, ratio)
+		tmpl.AGreen = computeLandsForColor(tmpl.Green, minLandsPerColor, ratio)
+	}
 }

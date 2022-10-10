@@ -39,7 +39,7 @@
                     // you can't have less than {{.MinCards}} cards in your deck
                     if (count < {{.MinCards}}){
                         nlands.value = {{.MinCards}} - nnonlandsInt;
-                        console.log("less than {{.MinCards}}")
+                        console.log("less than min")
                         console.log(nlands.value);
                     }
                     // if you have more than {{.MinCards}} cards in your deck, then you should have more lands than {{.NLands}}
@@ -52,9 +52,17 @@
                             console.log(nlands.value);
                         }
                         else {
-                            nlands.value = suggestionLandsInt;
-                            console.log("more than {{.MinCards}}");
-                            console.log(nlands.value);
+                            // here we must check if we don't get above {{.MaxCards}}
+                            if (suggestionLandsInt + nnonlandsInt > {{.MaxCards}}) {
+                                nlands.value = {{.MaxCards}} - nnonlandsInt;
+                                console.log("more than max");
+                                console.log(nlands.value);        
+                            }
+                            else {
+                                nlands.value = suggestionLandsInt;
+                                console.log("more than min, less than max");
+                                console.log(nlands.value);
+                            }
                         }
 	                // TODO check max boundaries for commander
                     }
