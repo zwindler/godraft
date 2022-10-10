@@ -7,148 +7,48 @@
     </head>
     <body>
         <h1>godraft 🎴 {{ if .Version }}(v{{ .Version }}){{ end }}</h1>
-    
-        <h2>Q: Combien de terrains devrais-je mettre dans mon deck ?</h2>
-        <form method="POST" action="compute">
-            <h4>Nombre de cartes (non-terrain) à mettre dans le deck</h4>
-            <div>
-                <input class="ncards" type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
-                <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NCards}}</output>
-            </div>
-            <h4>Nombre de terrains (suggéré en fonction du nombre de cartes)</h4>
-            <div>
-                <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
-                <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
-            </div>
-
-            <script>
-                let ncards=document.querySelector(".ncards");
-                let nlands=document.querySelector(".nlands");
-                let nlandsValue=document.querySelector(".nlandsValue");
-                ncards.addEventListener("input",(e)=>{
-                    let nlandsInt = parseInt(nlands.value)
-                    let ncardsInt = parseInt(e.target.value)
-                    let count = nlandsInt + ncardsInt;
-
-                    console.log(count);
-                    // you can't have less than 40 cards in a draft deck
-                    if (count < 40){
-                        nlands.value = 40 - ncardsInt;
-                        console.log(nlands.value);
-                    }
-                    // if you have more than 40, then you should have more lands than 17
-                    else {
-                        nlands.value = Math.round(17 + ((ncardsInt - 23) * 6 / 17));
-                        console.log(nlands.value);
-                    }
-                    nlandsValue.value = nlands.value;
-                })
-            </script>
-            
-            <h4>Somme des manas colorés pour chaque couleur</h4>
-            <table style="width:100%">
+        <h2>Etape 1 : Mon type de deck</h2>
+        <form method="POST" action="step2">
+            <table>
                 <tr>
                     <td>
-                        <h1>☀️</h1>
+                        <h4>Format</h4>
                     </td>
                     <td>
-                        <h1>💧</h1>
+                        <input type="radio" id="draft" name="deckformat" value="draft"
+                        checked>
+                        <label for="draft">Draft</label> (40 cartes minimum)
                     </td>
                     <td>
-                        <h1>💀</h1>
+                        <input type="radio" id="standard" name="deckformat" value="standard">
+                        <label for="standard">Standard</label> (60 cartes minimum)
                     </td>
                     <td>
-                        <h1>🔥</h1>
-                    </td>
-                    <td>
-                        <h1>🌳</h1>
+                        <input type="radio" id="commander" name="deckformat" value="commander">
+                        <label for="commander">Commander</label> (100 cartes)
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <h3>
-                            <input type="number" min=0 name="white" value="{{.White}}"/>
-                        </h3>
+                        <h4>Style de jeu</h4>
                     </td>
                     <td>
-                        <h3>
-                            <input type="number" min=0 name="blue" value="{{.Blue}}"/>
-                        </h3>
+                        <input type="radio" id="aggro" name="deckstyle" value="aggro">
+                        <label for="aggro">Aggro</label>
                     </td>
                     <td>
-                        <h3>
-                            <input type="number" min=0 name="black" value="{{.Black}}"/>
-                        </h3>
+                        <input type="radio" id="midrange" name="deckstyle" value="midrange"
+                        checked>
+                <label for="midrange">Midrange</label>
                     </td>
                     <td>
-                        <h3>
-                            <input type="number" min=0 name="red" value="{{.Red}}"/>
-                        </h3>
+                        <input type="radio" id="control" name="deckstyle" value="control">
+                        <label for="control">Control</label>
                     </td>
-                    <td>
-                        <h3>
-                            <input type="number" min=0 name="green" value="{{.Green}}"/>
-                        </h3>
-                    </td>      
                 </tr>
             </table>
-            <input type="submit" value="Calculer !" style="font-size: 1.5rem"/>
+            <input type="submit" value="Préparer !" style="font-size: 1.5rem"/>
         </form>
-
-        {{ if or (.AWhite) (.ABlue) (.ABlack) (.ARed) (.AGreen) }}
-        <h2>R: Vous devriez mettre ces terrains dans votre deck</h2>
-
-        <table style="width:100%">
-            <tr>
-                <td>
-                    <h1>☀️</h1>
-                </td>
-                <td>
-                    <h1>💧</h1>
-                </td>
-                <td>
-                    <h1>💀</h1>
-                </td>
-                <td>
-                    <h1>🔥</h1>
-                </td>
-                <td>
-                    <h1>🌳</h1>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h3>{{.AWhite}}</h3>
-                </td>
-                <td>
-                    <h3>{{.ABlue}}</h3>
-                </td>
-                <td>
-                    <h3>{{.ABlack}}</h3>
-                </td>
-                <td>
-                    <h3>{{.ARed}}</h3>
-                </td>
-                <td>
-                    <h3>{{.AGreen}}</h3>
-                </td>      
-            </tr>
-        </table>
-        {{ end }}
-
-        <h2>Aide</h2>
-        <ol style="margin-top: 0px;">
-            <li>Comptez le nombre de cartes non-terrain que vous voulez mettre dans le deck.</li>
-            <li>Choisissez ensuite combien de terrain vous voulez mettre.</li>
-                <ul>
-                    <li>En draft, pour un deck de 40 cartes, il est souvent conseillé de mettre 17 terrains pour 23 cartes non-terrain.</li>
-                </ul>
-            <li>Pour chaque couleur, faites la somme des manas colorés des coûts de manas de vos cartes</li>
-                <ul>
-                    <li>Par exemple, une carte 3️⃣☀️☀️ comptera pour 2 manas blancs, une 3️⃣☀️ pour un mana blanc</li>
-                </ul>
-            <li>Une fois les valeurs rentrées, cliquez sur "Calculer !"</li>
-        </ol>
 
         <h2>A propos</h2>
 
