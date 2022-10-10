@@ -13,12 +13,12 @@
         <h4>Format : {{ .DeckFormat }} <br/> Style de jeu : {{ .DeckStyle }}</h4>
 
         <form method="POST" action="compute">
-            <h4>Nombre de cartes (non-terrain) à mettre dans le deck</h4>
+            <h4>Nombre de cartes "non-terrain"</h4>
             <div>
                 <input class="nnonlands" type="range" name="nnonlands" value="{{.NNonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NNonLands}}</output>
             </div>
-            <h4>Nombre de terrains (suggéré en fonction du nombre de cartes)</h4>
+            <h4>Nombre de terrains (suggestion)</h4>
             <div>
                 <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
                 <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
@@ -39,9 +39,9 @@
                         nlands.value = {{.MinCards}} - nnonlandsInt;
                         console.log(nlands.value);
                     }
-                    // if you have more than {{.MinCards}}, then you should have more lands than 17
+                    // if you have more than {{.MinCards}}, then you should have more lands than {{.NLands}}
                     else {
-                        nlands.value = Math.round(17 + ((ncardsInt - 23) * 6 / 17));
+                        nlands.value = Math.round({{.NLands}} * (nnonlandsInt + nlandsInt) / {{.MinCards}});
                         console.log(nlands.value);
                     }
                     nlandsValue.value = nlands.value;
