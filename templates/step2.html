@@ -15,8 +15,8 @@
         <form method="POST" action="compute">
             <h4>Nombre de cartes (non-terrain) à mettre dans le deck</h4>
             <div>
-                <input class="ncards" type="range" name="ncards" value="{{.NCards}}" min="{{.MinCards}}" max="{{.MaxCards}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
-                <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NCards}}</output>
+                <input class="nnonlands" type="range" name="nnonlands" value="{{.NNonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; margin-bottom:0; line-height:0">
+                <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NNonLands}}</output>
             </div>
             <h4>Nombre de terrains (suggéré en fonction du nombre de cartes)</h4>
             <div>
@@ -25,21 +25,21 @@
             </div>
 
             <script>
-                let ncards=document.querySelector(".ncards");
+                let nnonlands=document.querySelector(".nnonlands");
                 let nlands=document.querySelector(".nlands");
                 let nlandsValue=document.querySelector(".nlandsValue");
-                ncards.addEventListener("input",(e)=>{
+                nnonlands.addEventListener("input",(e)=>{
                     let nlandsInt = parseInt(nlands.value)
-                    let ncardsInt = parseInt(e.target.value)
-                    let count = nlandsInt + ncardsInt;
+                    let nnonlandsInt = parseInt(e.target.value)
+                    let count = nlandsInt + nnonlandsInt;
 
                     console.log(count);
-                    // you can't have less than 40 cards in a draft deck
-                    if (count < 40){
-                        nlands.value = 40 - ncardsInt;
+                    // you can't have less than {{.MinCards}} cards in your deck
+                    if (count < {{.MinCards}}){
+                        nlands.value = {{.MinCards}} - nnonlandsInt;
                         console.log(nlands.value);
                     }
-                    // if you have more than 40, then you should have more lands than 17
+                    // if you have more than {{.MinCards}}, then you should have more lands than 17
                     else {
                         nlands.value = Math.round(17 + ((ncardsInt - 23) * 6 / 17));
                         console.log(nlands.value);

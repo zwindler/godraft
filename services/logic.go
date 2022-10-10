@@ -9,46 +9,48 @@ import (
 var (
 	ErrTemplateParseFile = errors.New("error while parsing template file")
 	ErrTemplateExecute   = errors.New("error while execution of template file")
-	ErrInvalidNCards     = errors.New("invalid NCards value")
+	ErrInvalidNNonLands  = errors.New("invalid NNonLands value")
 	ErrInvalidNLands     = errors.New("invalid NLands value")
-	ErrNoNCards          = errors.New("no value for NCards")
+	ErrNoNNonLands       = errors.New("no value for NNonLands")
 	ErrNoNLands          = errors.New("no value for NLands")
 )
 
 type TemplateStruct struct {
-	DeckFormat string
-	DeckStyle  string
-	NCards     int
-	MinCards   int
-	MaxCards   int
-	NLands     int
-	MinLands   int
-	MaxLands   int
-	White      int
-	AWhite     float64
-	Blue       int
-	ABlue      float64
-	Black      int
-	ABlack     float64
-	Red        int
-	ARed       float64
-	Green      int
-	AGreen     float64
-	Version    string
+	DeckFormat  string
+	DeckStyle   string
+	NLands      int
+	MinLands    int
+	MaxLands    int
+	NNonLands   int
+	MinNonLands int
+	MaxNonLands int
+	MinCards    int
+	MaxCards    int
+	White       int
+	AWhite      float64
+	Blue        int
+	ABlue       float64
+	Black       int
+	ABlack      float64
+	Red         int
+	ARed        float64
+	Green       int
+	AGreen      float64
+	Version     string
 }
 
-func CheckNCards(NCards string) (NCardsInt int, err error) {
-	if NCards == "" {
-		return DefaultTemplateStruct.NCards, ErrNoNCards
+func CheckNNonLands(NNonLands string) (NNonLandsInt int, err error) {
+	if NNonLands == "" {
+		return DefaultTemplateStruct.NNonLands, ErrNoNNonLands
 	} else {
-		NCardsInt, err = strconv.Atoi(NCards)
+		NNonLandsInt, err = strconv.Atoi(NNonLands)
 		if err != nil {
-			return DefaultTemplateStruct.NCards, ErrInvalidNCards
+			return DefaultTemplateStruct.NNonLands, ErrInvalidNNonLands
 		} else {
-			if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
-				return DefaultTemplateStruct.NCards, ErrInvalidNCards
+			if NNonLandsInt < DefaultTemplateStruct.MinCards || NNonLandsInt > DefaultTemplateStruct.MaxCards {
+				return DefaultTemplateStruct.NNonLands, ErrInvalidNNonLands
 			} else {
-				return NCardsInt, nil
+				return NNonLandsInt, nil
 			}
 		}
 	}
@@ -88,26 +90,23 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 
 	// define defaults depending on game type
 	if tmpl.DeckFormat == "standard" {
-		tmpl.NCards = 60
 		tmpl.MinCards = 60
 		tmpl.MaxCards = 100
 		tmpl.NLands = 22
 	} else {
 		if tmpl.DeckFormat == "commander" {
-			tmpl.NCards = 100
 			tmpl.MinCards = 100
 			tmpl.MaxCards = 100
 			tmpl.NLands = 37
 		} else {
 			// draft
-			tmpl.NCards = 40
 			tmpl.MinCards = 40
 			tmpl.MaxCards = 60
 			tmpl.NLands = 17
 		}
 	}
 
-	// set limits depending on game type
+	// set sliders limits depending on game type
 	tmpl.MinLands = int(float64(tmpl.NLands) * 0.5)
 	tmpl.MaxLands = int(float64(tmpl.NLands) * 1.5)
 
@@ -119,6 +118,9 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 			tmpl.NLands = int(float64(tmpl.NLands) * 1.1)
 		}
 	}
+	tmpl.NNonLands = tmpl.MinCards - tmpl.NLands
+	tmpl.MinNonLands = tmpl.MinCards - tmpl.MaxLands
+	tmpl.MaxNonLands = tmpl.MaxCards - tmpl.MinLands
 }
 
 func computeLandsForColor(color int, minLandsPerColor float64, ratio float64) float64 {

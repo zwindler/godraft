@@ -38,15 +38,15 @@ func stepTwoHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO deal with errors
 	deckFormat := r.FormValue("deckformat")
 	deckStyle := r.FormValue("deckstyle")
-	ncards := r.FormValue("ncards")
+	nnonlands := r.FormValue("nnonlands")
 	nlands := r.FormValue("nlands")
 
 	templateStruct.SetDefaults(deckFormat, deckStyle)
 
-	if ncards != "" {
-		templateStruct.NCards, err = CheckNCards(ncards)
+	if nnonlands != "" {
+		templateStruct.NNonLands, err = CheckNNonLands(nnonlands)
 		if err != nil {
-			log.Warn("fail to read ncards")
+			log.Warn("fail to read nnonlands")
 		}
 	}
 	if nlands != "" {
