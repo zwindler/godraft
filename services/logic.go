@@ -1,8 +1,18 @@
 package services
 
 import (
+	"errors"
 	"math"
 	"strconv"
+)
+
+var (
+	ErrTemplateParseFile = errors.New("error while parsing template file")
+	ErrTemplateExecute   = errors.New("error while execution of template file")
+	ErrInvalidNCards     = errors.New("invalid NCards value")
+	ErrInvalidNLands     = errors.New("invalid NLands value")
+	ErrNoNCards          = errors.New("no value for NCards")
+	ErrNoNLands          = errors.New("no value for NLands")
 )
 
 type TemplateStruct struct {
@@ -28,27 +38,35 @@ type TemplateStruct struct {
 }
 
 func CheckNCards(NCards string) (NCardsInt int, err error) {
-	NCardsInt, err = strconv.Atoi(NCards)
-	if err != nil {
-		return DefaultTemplateStruct.NCards, ErrInvalidNCards
+	if NCards == "" {
+		return DefaultTemplateStruct.NCards, ErrNoNCards
 	} else {
-		if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
+		NCardsInt, err = strconv.Atoi(NCards)
+		if err != nil {
 			return DefaultTemplateStruct.NCards, ErrInvalidNCards
 		} else {
-			return NCardsInt, nil
+			if NCardsInt < DefaultTemplateStruct.MinCards || NCardsInt > DefaultTemplateStruct.MaxCards {
+				return DefaultTemplateStruct.NCards, ErrInvalidNCards
+			} else {
+				return NCardsInt, nil
+			}
 		}
 	}
 }
 
 func CheckNLands(NLands string) (NLandsInt int, err error) {
-	NLandsInt, err = strconv.Atoi(NLands)
-	if err != nil {
-		return DefaultTemplateStruct.NLands, ErrInvalidNLands
+	if NLands == "" {
+		return DefaultTemplateStruct.NLands, ErrNoNLands
 	} else {
-		if NLandsInt < DefaultTemplateStruct.MinLands || NLandsInt > DefaultTemplateStruct.MaxLands {
+		NLandsInt, err = strconv.Atoi(NLands)
+		if err != nil {
 			return DefaultTemplateStruct.NLands, ErrInvalidNLands
 		} else {
-			return NLandsInt, nil
+			if NLandsInt < DefaultTemplateStruct.MinLands || NLandsInt > DefaultTemplateStruct.MaxLands {
+				return DefaultTemplateStruct.NLands, ErrInvalidNLands
+			} else {
+				return NLandsInt, nil
+			}
 		}
 	}
 }
@@ -63,9 +81,9 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 	}
 
 	if deckStyle == "aggro" || deckStyle == "control" {
-		tmpl.DeckFormat = deckFormat
+		tmpl.DeckStyle = deckFormat
 	} else {
-		tmpl.DeckFormat = "midrange"
+		tmpl.DeckStyle = "midrange"
 	}
 
 	// define defaults depending on game type
@@ -109,4 +127,15 @@ func computeLandsForColor(color int, minLandsPerColor float64, ratio float64) fl
 	} else {
 		return 0
 	}
+}
+
+// TODO check input validity
+// TODO deal with errors properly
+// must be > 0 and probably < 100
+func getLandFromForm(color string) int {
+	value, err := strconv.Atoi(color)
+	if err != nil {
+		return 0
+	}
+	return value
 }

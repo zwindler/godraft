@@ -8,49 +8,10 @@
     <body>
         <h1>godraft 🎴 {{ if .Version }}(v{{ .Version }}){{ end }}</h1>
 
-        <form method="POST" action="prepare">
-            <table>
-                <tr>
-                    <td>
-                        <h4>Format</h4>
-                    </td>
-                    <td>
-                        <input type="radio" id="draft" name="deckformat" value="draft"
-                        checked>
-                        <label for="draft">Draft</label> (40 cartes minimum)
-                    </td>
-                    <td>
-                        <input type="radio" id="standard" name="deckformat" value="standard">
-                        <label for="standard">Standard</label> (60 cartes minimum)
-                    </td>
-                    <td>
-                        <input type="radio" id="commander" name="deckformat" value="commander">
-                        <label for="commander">Commander</label> (100 cartes)
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h4>Style de jeu</h4>
-                    </td>
-                    <td>
-                        <input type="radio" id="aggro" name="deckstyle" value="aggro">
-                        <label for="aggro">Aggro</label>
-                    </td>
-                    <td>
-                        <input type="radio" id="midrange" name="deckstyle" value="midrange"
-                        checked>
-                <label for="midrange">Midrange</label>
-                    </td>
-                    <td>
-                        <input type="radio" id="control" name="deckstyle" value="control">
-                        <label for="control">Control</label>
-                    </td>
-                </tr>
-            </table>
-            <input type="submit" value="Préparer !" style="font-size: 1.5rem"/>
-        </form>
-
         <h2>Etape 2 : combien de terrains devrais-je mettre dans mon deck ?</h2>
+
+        <h4>Format : {{ .DeckFormat }} <br/> Style de jeu : {{ .DeckStyle }}</h4>
+
         <form method="POST" action="compute">
             <h4>Nombre de cartes (non-terrain) à mettre dans le deck</h4>
             <div>

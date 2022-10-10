@@ -1,19 +1,13 @@
 package services
 
 import (
-	"errors"
 	"html/template"
 	"net/http"
-	"strconv"
 
 	log "github.com/sirupsen/logrus"
 )
 
 var (
-	ErrTemplateParseFile  = errors.New("error while parsing template file")
-	ErrTemplateExecute    = errors.New("error while execution of template file")
-	ErrInvalidNCards      = errors.New("invalid NCards value")
-	ErrInvalidNLands      = errors.New("invalid NLands value")
 	DefaultTemplateStruct = TemplateStruct{}
 	Version               string
 )
@@ -44,41 +38,29 @@ func stepTwoHandler(w http.ResponseWriter, r *http.Request) {
 	// TODO deal with errors
 	deckFormat := r.FormValue("deckformat")
 	deckStyle := r.FormValue("deckstyle")
+	ncards := r.FormValue("ncards")
+	nlands := r.FormValue("nlands")
 
 	templateStruct.SetDefaults(deckFormat, deckStyle)
 
-	// TODO deal with errors
-	templateStruct.NCards, err = CheckNCards(r.FormValue("ncards"))
-	if err != nil {
-		log.Warn("fail to read ncards")
+	if ncards != "" {
+		templateStruct.NCards, err = CheckNCards(ncards)
+		if err != nil {
+			log.Warn("fail to read ncards")
+		}
 	}
-	templateStruct.NLands, err = CheckNLands(r.FormValue("nlands"))
-	if err != nil {
-		log.Warn("fail to read nlands")
+	if nlands != "" {
+		templateStruct.NLands, err = CheckNLands(nlands)
+		if err != nil {
+			log.Warn("fail to read nlands")
+		}
 	}
-	// TODO check input validity
-	// TODO deal with errors properly
-	// must be > 0 and probably < 100
-	templateStruct.White, err = strconv.Atoi(r.FormValue("white"))
-	if err != nil {
-		templateStruct.White = 0
-	}
-	templateStruct.Blue, err = strconv.Atoi(r.FormValue("blue"))
-	if err != nil {
-		templateStruct.Blue = 0
-	}
-	templateStruct.Black, err = strconv.Atoi(r.FormValue("black"))
-	if err != nil {
-		templateStruct.Black = 0
-	}
-	templateStruct.Red, err = strconv.Atoi(r.FormValue("red"))
-	if err != nil {
-		templateStruct.Red = 0
-	}
-	templateStruct.Green, err = strconv.Atoi(r.FormValue("green"))
-	if err != nil {
-		templateStruct.Green = 0
-	}
+
+	templateStruct.White = getLandFromForm(r.FormValue("white"))
+	templateStruct.Blue = getLandFromForm(r.FormValue("blue"))
+	templateStruct.Black = getLandFromForm(r.FormValue("black"))
+	templateStruct.Red = getLandFromForm(r.FormValue("red"))
+	templateStruct.Green = getLandFromForm(r.FormValue("green"))
 
 	sumColored := templateStruct.White + templateStruct.Blue + templateStruct.Black + templateStruct.Red + templateStruct.Green
 	if sumColored != 0 {
