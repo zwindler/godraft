@@ -83,7 +83,7 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 	}
 
 	if deckStyle == "aggro" || deckStyle == "control" {
-		tmpl.DeckStyle = deckFormat
+		tmpl.DeckStyle = deckStyle
 	} else {
 		tmpl.DeckStyle = "midrange"
 	}
