@@ -18,7 +18,7 @@
             <div>
                 <h4>Nombre de cartes "non-terrain"</h4>
                 <input class="nonlands" type="range" name="nonlands" value="{{.NonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
-                <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NonLands}}</output>
+                <output class="nonLandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NonLands}}</output>
             </div>
             <div>
             <h4>Nombre de terrains (suggestion)</h4>
@@ -28,8 +28,11 @@
 
             <script>
                 let nonLands=document.querySelector(".nonlands");
+                let nonLandsValue=document.querySelector(".nonLandsValue");
                 let lands=document.querySelector(".lands");
                 let landsValue=document.querySelector(".landsValue");
+
+                // if you move nonlands slider, adapt lands suggestions according to ratio and limits
                 nonLands.addEventListener("input",(e)=>{
                     let landsInt = parseInt(lands.value)
                     let nonLandsInt = parseInt(e.target.value)
@@ -64,9 +67,30 @@
                                 console.log(lands.value);
                             }
                         }
-	                // TODO check max boundaries for commander
                     }
                     landsValue.value = lands.value;
+                })
+     
+                // same thing but with lands slider
+                lands.addEventListener("input",(e)=>{
+                    let landsInt = parseInt(e.target.value)
+                    let nonLandsInt = parseInt(nonLands.value)
+                    let count = landsInt + nonLandsInt;
+
+                    console.log(count);
+                    // you can't have less than {{.MinCards}} cards in your deck
+                    if (count < {{.MinCards}}){
+                        nonLands.value = {{.MinCards}} - landsInt;
+                        console.log("less than min")
+                        console.log(nonLands.value);
+                    }
+                    // you can't have more than {{.MaxCards}} in your deck
+                    if (count > {{.MaxCards}}){
+                        nonLands.value = {{.MaxCards}} - landsInt;
+                        console.log("more than max");
+                        console.log(nonLands.value);      
+                    }
+                    nonLandsValue.value = nonLands.value;
                 })
             </script>
             
