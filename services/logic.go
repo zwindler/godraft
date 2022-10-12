@@ -9,19 +9,19 @@ import (
 var (
 	ErrTemplateParseFile = errors.New("error while parsing template file")
 	ErrTemplateExecute   = errors.New("error while execution of template file")
-	ErrInvalidNNonLands  = errors.New("invalid NNonLands value")
-	ErrInvalidNLands     = errors.New("invalid NLands value")
-	ErrNoNNonLands       = errors.New("no value for NNonLands")
-	ErrNoNLands          = errors.New("no value for NLands")
+	ErrInvalidNonLands   = errors.New("invalid NonLands value")
+	ErrInvalidLands      = errors.New("invalid Lands value")
+	ErrNoNonLands        = errors.New("no value for NonLands")
+	ErrNoLands           = errors.New("no value for Lands")
 )
 
 type TemplateStruct struct {
 	DeckFormat  string
 	DeckStyle   string
-	NLands      int
+	Lands       int
 	MinLands    int
 	MaxLands    int
-	NNonLands   int
+	NonLands    int
 	MinNonLands int
 	MaxNonLands int
 	MinCards    int
@@ -39,42 +39,42 @@ type TemplateStruct struct {
 	Version     string
 }
 
-func (tmpl *TemplateStruct) CheckNNonLands(NNonLands string) (err error) {
-	if NNonLands == "" {
+func (tmpl *TemplateStruct) CheckNonLands(nonLands string) (err error) {
+	if nonLands == "" {
 		// if empty, return and keep defaults
-		return ErrNoNNonLands
+		return ErrNoNonLands
 	} else {
-		NNonLandsInt, err := strconv.Atoi(NNonLands)
+		nonLandsInt, err := strconv.Atoi(nonLands)
 		if err != nil {
 			// str to int failure
-			return ErrInvalidNNonLands
+			return ErrInvalidNonLands
 		} else {
-			if NNonLandsInt < tmpl.MinNonLands || NNonLandsInt > tmpl.MaxCards {
-				// nnonlands doesn't fit in format boundaries
-				return ErrInvalidNNonLands
+			if nonLandsInt < tmpl.MinNonLands || nonLandsInt > tmpl.MaxCards {
+				// nonlands number doesn't fit in format boundaries
+				return ErrInvalidNonLands
 			} else {
-				tmpl.NNonLands = NNonLandsInt
+				tmpl.NonLands = nonLandsInt
 				return nil
 			}
 		}
 	}
 }
 
-func (tmpl *TemplateStruct) CheckNLands(NLands string) (err error) {
-	if NLands == "" {
+func (tmpl *TemplateStruct) CheckLands(lands string) (err error) {
+	if lands == "" {
 		// if empty, return and keep defaults
-		return ErrNoNLands
+		return ErrNoLands
 	} else {
-		NLandsInt, err := strconv.Atoi(NLands)
+		landsInt, err := strconv.Atoi(lands)
 		if err != nil {
 			// str to int failure
-			return ErrInvalidNLands
+			return ErrInvalidLands
 		} else {
-			if NLandsInt < tmpl.MinLands || NLandsInt > tmpl.MaxLands {
-				// nlands doesn't fit in format boundaries
-				return ErrInvalidNLands
+			if landsInt < tmpl.MinLands || landsInt > tmpl.MaxLands {
+				// lands doesn't fit in format boundaries
+				return ErrInvalidLands
 			} else {
-				tmpl.NLands = NLandsInt
+				tmpl.Lands = landsInt
 				return nil
 			}
 		}
@@ -100,35 +100,35 @@ func (tmpl *TemplateStruct) SetDefaults(deckFormat string, deckStyle string) {
 	if tmpl.DeckFormat == "standard" {
 		tmpl.MinCards = 60
 		tmpl.MaxCards = 80
-		tmpl.NLands = 22
+		tmpl.Lands = 22
 	} else {
 		if tmpl.DeckFormat == "commander" {
 			tmpl.MinCards = 100
 			tmpl.MaxCards = 100
-			tmpl.NLands = 37
+			tmpl.Lands = 37
 		} else {
 			// draft
 			tmpl.MinCards = 40
 			tmpl.MaxCards = 52
-			tmpl.NLands = 17
+			tmpl.Lands = 17
 		}
 	}
 
 	// set sliders limits depending on game type
-	tmpl.MinLands = int(float64(tmpl.NLands) * 0.75)
-	tmpl.MaxLands = int(float64(tmpl.NLands) * 1.33)
+	tmpl.MinLands = int(float64(tmpl.Lands) * 0.75)
+	tmpl.MaxLands = int(float64(tmpl.Lands) * 1.33)
 
 	// adapt defaults depending on game style
 	if tmpl.DeckStyle == "aggro" {
-		tmpl.NLands = int(float64(tmpl.NLands) * 0.9)
+		tmpl.Lands = int(float64(tmpl.Lands) * 0.9)
 	} else {
 		if tmpl.DeckStyle == "control" {
-			tmpl.NLands = int(float64(tmpl.NLands) * 1.1)
+			tmpl.Lands = int(float64(tmpl.Lands) * 1.1)
 		}
 	}
 
 	// set boundaries for lands
-	tmpl.NNonLands = tmpl.MinCards - tmpl.NLands
+	tmpl.NonLands = tmpl.MinCards - tmpl.Lands
 	tmpl.MinNonLands = tmpl.MinCards - tmpl.MaxLands
 	// commander is more restrictive so I must set different rules
 	if deckFormat == "commander" {
@@ -183,7 +183,7 @@ func (tmpl *TemplateStruct) suggestLands() {
 		}
 
 		// compute the ratio of lands per color without lands we add to enforce minimums
-		var ratio float64 = float64(sumColored) / (float64(tmpl.NLands) - minLandsPerColor*colors)
+		var ratio float64 = float64(sumColored) / (float64(tmpl.Lands) - minLandsPerColor*colors)
 
 		// for each color, add minLandsPerColor and ratio of remaining lands per color
 		tmpl.AWhite = computeLandsForColor(tmpl.White, minLandsPerColor, ratio)

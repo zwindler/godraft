@@ -17,56 +17,56 @@
             <input type="hidden" id="{{.DeckStyle}}" name="deckstyle" value="{{.DeckStyle}}">
             <div>
                 <h4>Nombre de cartes "non-terrain"</h4>
-                <input class="nnonlands" type="range" name="nnonlands" value="{{.NNonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
-                <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NNonLands}}</output>
+                <input class="nonlands" type="range" name="nonlands" value="{{.NonLands}}" min="{{.MinNonLands}}" max="{{.MaxNonLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
+                <output style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NonLands}}</output>
             </div>
             <div>
             <h4>Nombre de terrains (suggestion)</h4>
-                <input class="nlands" type="range" name="nlands" value="{{.NLands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
-                <output class="nlandsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.NLands}}</output>
+                <input class="lands" type="range" name="lands" value="{{.Lands}}" min="{{.MinLands}}" max="{{.MaxLands}}" step="1" oninput="this.nextElementSibling.value = this.value" style="width:85%; line-height:0">
+                <output class="landsValue" style="font-size: 2rem; text-align: right; display:inline-block; width:10%; line-height:0">{{.Lands}}</output>
             </div>
 
             <script>
-                let nnonlands=document.querySelector(".nnonlands");
-                let nlands=document.querySelector(".nlands");
-                let nlandsValue=document.querySelector(".nlandsValue");
-                nnonlands.addEventListener("input",(e)=>{
-                    let nlandsInt = parseInt(nlands.value)
-                    let nnonlandsInt = parseInt(e.target.value)
-                    let count = nlandsInt + nnonlandsInt;
+                let nonLands=document.querySelector(".nonlands");
+                let lands=document.querySelector(".lands");
+                let landsValue=document.querySelector(".landsValue");
+                nonLands.addEventListener("input",(e)=>{
+                    let landsInt = parseInt(lands.value)
+                    let nonLandsInt = parseInt(e.target.value)
+                    let count = landsInt + nonLandsInt;
 
                     console.log(count);
                     // you can't have less than {{.MinCards}} cards in your deck
                     if (count < {{.MinCards}}){
-                        nlands.value = {{.MinCards}} - nnonlandsInt;
+                        lands.value = {{.MinCards}} - nonLandsInt;
                         console.log("less than min")
-                        console.log(nlands.value);
+                        console.log(lands.value);
                     }
-                    // if you have more than {{.MinCards}} cards in your deck, then you should have more lands than {{.NLands}}
+                    // if you have more than {{.MinCards}} cards in your deck, then you should have more lands than {{.Lands}}
                     else {
-                        suggestionLandsInt = Math.round({{.NLands}} * (count) / {{.MinCards}});
-                        // edge case where we ajusted the lands to fill missing nonland cards to obtain {{.MinCards}}
-                        if (suggestionLandsInt + nnonlandsInt < {{.MinCards}}) {
-                            nlands.value = {{.MinCards}} - nnonlandsInt;
+                        suggestionLandsInt = Math.round({{.Lands}} * (count) / {{.MinCards}});
+                        // edge case where we adjusted the lands to fill missing nonland cards to obtain {{.MinCards}}
+                        if (suggestionLandsInt + nonLandsInt < {{.MinCards}}) {
+                            lands.value = {{.MinCards}} - nonLandsInt;
                             console.log("edge case");
-                            console.log(nlands.value);
+                            console.log(lands.value);
                         }
                         else {
                             // here we must check if we don't get above {{.MaxCards}}
-                            if (suggestionLandsInt + nnonlandsInt > {{.MaxCards}}) {
-                                nlands.value = {{.MaxCards}} - nnonlandsInt;
+                            if (suggestionLandsInt + nonLandsInt > {{.MaxCards}}) {
+                                lands.value = {{.MaxCards}} - nonLandsInt;
                                 console.log("more than max");
-                                console.log(nlands.value);        
+                                console.log(lands.value);        
                             }
                             else {
-                                nlands.value = suggestionLandsInt;
+                                lands.value = suggestionLandsInt;
                                 console.log("more than min, less than max");
-                                console.log(nlands.value);
+                                console.log(lands.value);
                             }
                         }
 	                // TODO check max boundaries for commander
                     }
-                    nlandsValue.value = nlands.value;
+                    landsValue.value = lands.value;
                 })
             </script>
             
