@@ -1,3 +1,5 @@
+# godraft RELEASES
+
 ## 2.1.0
 
 * Lands slider also dynamically enforces limits (min/max cards in deck)
