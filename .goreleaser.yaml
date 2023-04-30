@@ -12,14 +12,46 @@ builds:
       - arm64
     ldflags:
       - -X main.Version={{.Version}}
+dockers:
+  - use: buildx
+    goos: linux
+    goarch: amd64
+    image_templates:
+      - "{{.ProjectName}}:{{.Version}}-amd64"
+      - "{{.ProjectName}}:latest-amd64"
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--build-arg=VERSION={{.Version}}"
+    extra_files:
+      - static/
+      - templates/
+  - use: buildx
+    goos: linux
+    goarch: arm64
+    image_templates:
+      - "{{.ProjectName}}:{{.Version}}-arm64"
+      - "{{.ProjectName}}:latest-arm64"
+    build_flag_templates:
+      - "--platform=linux/arm64"
+      - "--build-arg=VERSION={{.Version}}"
+    extra_files:
+      - static/
+      - templates/
+docker_manifests:
+  - name_template: "{{.ProjectName}}:{{.Version}}"
+    image_templates:
+      - "{{.ProjectName}}:{{.Version}}-amd64"
+      - "{{.ProjectName}}:{{.Version}}-arm64"
+  - name_template: "{{.ProjectName}}:latest"
+    image_templates:
+      - "{{.ProjectName}}:latest-amd64"
+      - "{{.ProjectName}}:latest-arm64"
 archives:
   - format: tar.gz
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
 checksum:
   name_template: 'checksums.txt'
