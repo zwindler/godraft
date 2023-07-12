@@ -1,5 +1,9 @@
 # godraft RELEASES
 
+## 2.2.0
+
+* Adding Luciole (https://luciole-vision.com/) as font for more accessibility (a11y)
+
 ## 2.1.0
 
 * Lands slider also dynamically enforces limits (min/max cards in deck)
